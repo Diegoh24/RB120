@@ -41,30 +41,38 @@ class Computer < Player
 end
 
 class Move
+  attr_reader :move
+
   VALUES = %w(rock paper scissors lizard spock)
 
   def initialize(choice)
-    @value = choice
+    @move = case choice
+             when 'paper' then Paper.new
+             when 'scissors' then Scissors.new
+             when 'rock' then Rock.new
+             when 'lizard' then Lizard.new
+             when 'spock' then Spock.new
+             end
   end
 
   def scissors?
-    @value == 'scissors'
+    move.val == 'scissors'
   end
 
   def rock?
-    @value == 'rock'
+    move.val == 'rock'
   end
 
   def paper?
-    @value == 'paper'
+    move.val == 'paper'
   end
 
   def spock?
-    @value == 'spock'
+    move.val == 'spock'
   end
 
   def lizard?
-    @value == 'lizard'
+    move.val == 'lizard'
   end
 
   def >(other_move)
@@ -82,9 +90,47 @@ class Move
   end
 
   def to_s
-    @value
+    move.val
   end
 end
+
+class Rock
+  attr_reader :val
+  def initialize
+    @val = 'rock'
+  end
+end
+
+class Paper
+  attr_reader :val
+  def initialize
+    @val = 'paper'
+  end
+end
+
+class Scissors
+  attr_reader :val
+  def initialize
+    @val = 'scissors'
+  end
+end
+
+class Lizard
+  attr_reader :val
+  def initialize
+    @val = 'lizard'
+  end
+end
+
+class Spock
+  attr_reader :val
+  def initialize
+    @val = 'spock'
+  end
+end
+
+
+
 class RPSGame
   attr_accessor :human, :computer
 

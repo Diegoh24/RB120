@@ -86,22 +86,27 @@ class Move
   end
 end
 class RPSGame
+  WINS = 10
+
   attr_accessor :human, :computer
 
   def initialize
     @human = Human.new
     @computer = Computer.new
-    @@wins = { human => 0, computer => 0}
+    @@wins = { human => 0, computer => 0 }
+    @@moves = { human => [], computer => [] }
   end
 
   def display_welcome_message
     puts "Welcome to Rock, Paper, Scissors!"
-    puts "First to 10 wins, is the grand champ!"
+    puts "First to #{WINS} wins is the grand champ!"
   end
 
   def display_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}"
+    @@moves[human] << human.move
+    @@moves[computer] << computer.move.to_s
   end
 
   def display_winner
@@ -120,21 +125,8 @@ class RPSGame
     puts "Thanks for playing Rock, Paper, Scissors. Good bye!"
   end
 
-  # def play_again?
-  #   answer = nil
-
-  #   loop do
-  #     puts "Do you want to play again? (Y/N)"
-  #     answer = gets.chomp.downcase
-  #     break if %(y n).include? answer
-  #     puts "Sorry, must be y or n."
-  #   end
-
-  #   answer == 'y'
-  # end
-
   def winner?
-    @@wins.values.any? { |wins| wins >= 10 }
+    @@wins.values.any? { |wins| wins >= WINS }
   end
 
   def display_wins
@@ -144,9 +136,22 @@ class RPSGame
   end
 
   def display_final_winner
-    final_winner = @@wins[human] == 10 ? human : computer
+    final_winner = @@wins[human] == WINS ? human : computer
     puts "The final winner is #{final_winner.name}!"
     puts "\n"
+  end
+
+  def display_all_moves
+    puts "\n"
+
+    @@moves.each_key do |player|
+      puts "All #{player.name} moves:\n\n"
+      @@moves[player].each_with_index do |move, round|
+        puts "Round #{round + 1} : #{player.name} chose #{move}"
+      end
+
+    puts "\n"
+    end
   end
 
   def play
@@ -163,6 +168,8 @@ class RPSGame
 
     display_final_winner
     display_goodbye_message
+
+    display_all_moves
   end
 end
 
