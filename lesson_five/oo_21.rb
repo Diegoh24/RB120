@@ -31,7 +31,6 @@ class Participant
   def initialize
     @hand = []
     @name = set_name
-    @busted = false
   end
 
   attr_reader :hand, :name
